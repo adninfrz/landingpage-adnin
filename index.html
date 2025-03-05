@@ -1,23 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vite + Tailwind + Alpine</title>
-</head>
-<body class="bg-gray-100 p-8">
-  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">Vite + Tailwind + Alpine</h1>
-    
-    <!-- Contoh penggunaan Alpine JS -->
-    <div x-data="{ count: 0 }" class="mt-4">
-      <button  @click="count++" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-        Klik Saya
-      </button>
-      <p class="mt-2">Anda telah mengklik tombol <span x-text="count" class="font-bold"></span> kali.</p>
-    </div>
-  </div>
 
-  <script type="module" src="/src/main.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nadzar.id</title>
+    <link rel="icon" href="src/images/favicon-32x32.png" type="image/x-icon">
+    <link rel="shortcut icon" href="src/images/favicon-32x32.png" type="image/x-icon">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Navigation Bar -->
+    <nav x-data="{ scrolled: false, isOpen: false }"
+        x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 })"
+        :class="scrolled ? 'bg-slate-700 shadow-md' : 'bg-transparent'"
+        class="p-4 fixed top-0 left-0 w-full z-50 transition-all duration-300">
+
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <img src="src/images/logo.png" alt="" class="h-12 w-auto">
+
+            <!-- Hamburger menu button (hanya tampil di mobile) -->
+            <button @click="isOpen = !isOpen" class="lg:hidden focus:outline-none"
+                :class="scrolled ? 'text-white' : 'text-gray-800'">
+                <!-- Icon hamburger saat menu tertutup -->
+                <svg x-show="!isOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+
+                <!-- Icon X saat menu terbuka -->
+                <svg x-show="isOpen" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+
+            <!-- Menu desktop -->
+            <div class="hidden lg:flex space-x-11">
+                <a href="#" :class="scrolled ? 'text-white' : 'text-gray-800'" class="hover:underline">Tentang Kami</a>
+                <a href="#" :class="scrolled ? 'text-white' : 'text-gray-800'" class="hover:underline">Produk</a>
+                <a href="#" :class="scrolled ? 'text-white' : 'text-gray-800'" class="hover:underline">Layanan</a>
+                <a href="#" :class="scrolled ? 'text-white' : 'text-gray-800'" class="hover:underline">Kontak</a>
+            </div>
+        </div>
+
+        <!-- Menu mobile (dropdown) -->
+        <div x-show="isOpen" x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="lg:hidden absolute left-0 right-0 top-20 p-4 bg-white shadow-lg z-20 rounded-b-lg"
+            style="display: none;">
+            <div class="flex flex-col space-y-4">
+                <a href="#" class="text-gray-800 hover:text-gray-600 py-2">Tentang Kami</a>
+                <a href="#" class="text-gray-800 hover:text-gray-600 py-2">Produk</a>
+                <a href="#" class="text-gray-800 hover:text-gray-600 py-2">Layanan</a>
+                <a href="#" class="text-gray-800 hover:text-gray-600 py-2">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- =========== Hero Section Start =========== -->
+    <section class="mt-10 pt-6">
+        <div class="container mx-auto">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 items-center">
+                <div class="text-sm py-20 px-10">
+                    <span
+                        class="inline-flex py-2 text-lg text-black font-medium items-center justify-center rounded-full">
+                        <i data-lucide="minus"></i> Nadzar Furniture</span>
+                    <h1 class="md:text-6xl/tight text-4xl text-dark tracking-normal leading-normal font-bold mb-4 mt-6">
+                        Sentuhan Elegan <span class="text-primary"> Furniture Impian </span></h1>
+                    <p class="text-base font-medium text-muted leading-7 mt-5 capitalize">Temukan koleksi furniture berkualitas tinggi dengan desain modern dan elegan. Dari ruang tamu hingga kamar tidur, Nadzar Furniture menghadirkan perpaduan 
+                        sempurna antara estetika dan kenyamanan. Wujudkan hunian impian Anda dengan produk terbaik 
+                        yang dirancang untuk ketahanan dan gaya yang tak lekang oleh waktu..</p>
+                    <button onclick="window.location.href='#produk'" class="inline-block mt-6 px-6 py-3 bg-slate-700 text-white font-medium rounded-lg transition-all duration-300 hover:scale-105 active:scale-95">
+                        Lihat Produk
+                    </button>
+                </div>
+
+                <div class="mt-4 pt-20 sm:mt-0 sm:pt-0">
+                    <img src="src/images/bg-img.jpg" alt="" class="h-[600px] rounded-xl max-w-full mx-auto drop-shadow-lg">
+
+                    <div class="absolute bottom-3/4 -end-14 2xl:end-8 hidden xl:block">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Start -->
+    <section id="about" class="py-20">
+        <!-- <div class="container mx-auto">
+            <div class="grid lg:grid-cols-2 items-center gap-6">
+                <div class="lg:ms-5 ms-8">
+                    <div>
+                        <span class="text-sm text-primary uppercase font-semibold tracking-wider text-default-950">
+                            Tentang Kami
+                        </span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl/tight font-bold text-black mt-4">
+                        Get Started In Minutes: Download The App, Create Your Profile
+                    </h2>
+                    <p class="text-pretty font-semibold text-muted mt-6 leading-7 capitalize">
+                        Selamat datang di Nadzar Furniture, tempat di mana desain elegan bertemu dengan kenyamanan. Kami 
+                        menghadirkan koleksi furniture berkualitas tinggi yang dirancang untuk memperindah setiap sudut 
+                        rumah dan ruang kerja Anda.
+    
+                        Dengan komitmen terhadap craftsmanship, material terbaik, dan desain inovatif, kami memastikan 
+                        setiap produk tidak hanya estetis tetapi juga fungsional dan tahan lama. Dari ruang tamu hingga 
+                        kamar tidur, kami menawarkan solusi interior yang sempurna untuk menciptakan suasana yang hangat 
+                        dan harmonis.
+    
+                        Jelajahi koleksi kami dan temukan furniture impian Anda hanya di Nadzar Furniture – karena rumah 
+                        yang nyaman dimulai dari pilihan yang tepat!
+                    </p>
+                </div>
+                <div class="flex justify-center">
+                    <img src="src/images/softwood-for-furniture-making.jpg" class="h-[450px] rounded-xl object-cover" alt="feature-image">
+                </div>
+            </div>
+        </div> -->
+        <div class="container">
+
+            <div class="grid lg:grid-cols-2 items-center gap-6 pt-6">
+                <div class="flex items-center">
+                    <img src="src/images/furniture.png" class="h-[650px] rounded-xl mx-auto drop-shadow-lg" alt="feature section">
+                </div>
+
+                <div class="lg:ms-5 ms-8">
+                    <p class="badge w-fit bg-slate-700 text-white p-[8px_16px] rounded-full uppercase font-bold text-sm">
+                        TENTANG KAMI</p>
+                    <h2 class="text-3xl md:text-4xl/tight font-semibold text-black mt-4">Nadzar Furniture</h2>
+
+                    <p class="text-base font-normal text-muted mt-6">Selamat datang di Nadzar Furniture, tempat di mana desain elegan bertemu dengan kenyamanan. Kami 
+                        menghadirkan koleksi furniture berkualitas tinggi yang dirancang untuk memperindah setiap sudut 
+                        rumah dan ruang kerja Anda.
+    
+                        Dengan komitmen terhadap craftsmanship, material terbaik, dan desain inovatif, kami memastikan 
+                        setiap produk tidak hanya estetis tetapi juga fungsional dan tahan lama. Dari ruang tamu hingga 
+                        kamar tidur, kami menawarkan solusi interior yang sempurna untuk menciptakan suasana yang hangat 
+                        dan harmonis.
+    
+                        Jelajahi koleksi kami dan temukan furniture impian Anda hanya di Nadzar Furniture – karena rumah 
+                        yang nyaman dimulai dari pilihan yang tepat!</p>
+                </div>
+            </div>
+            <!-- <div class="grid lg:grid-cols-2 items-center gap-6 pt-6">
+                <div class="flex items-center">
+                    <img src="src/images/furniture.png" class="h-[650px] rounded-xl mx-auto" alt="feature section">
+                </div>
+
+                <div class="lg:ms-5 ms-8">
+                    <span
+                        class="text-sm text-primary uppercase font-semibold tracking-wider text-default-950">Misi</span>
+                    <h2 class="text-3xl md:text-4xl/tight font-semibold text-black mt-4">Achievement Via Our Distinct
+                        Methodology</h2>
+
+                    <p class="text-base font-normal text-muted mt-6">Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+                        id est laborum.</p>
+                </div>
+            </div>
+        </div> -->
+        </div>
+    </section>
+    <!-- Produk Start -->
+    <section id="Produk" class="py-20">
+        <div class="container mx-auto">
+            <div class="">
+                <div class="text-center max-w-xl mx-auto">
+                    <p class="badge w-fit bg-slate-700 text-white p-[8px_16px] rounded-full uppercase mx-auto font-bold text-sm">
+                        PRODUK</p>
+                    <h2 class="text-3xl md:text-4xl/tight font-semibold mt-4">Lihat berbagai koleksi dari Nadzar Furniture </h2>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mt-14 items-center">
+                <div class="bg-white rounded-xl border">
+                    <div class="relative">
+                        <img class="rounded-t-xl" src="src/images/produk 1.png" alt="">
+                    </div>
+                    <div class="flex py-6 px-6">
+                        <div>
+                            <a href="#" class="text-xl text-black font-semibold line-clamp-2">Spotlight — Equinox
+                                Collection by Shane Griffin</a>
+                            <p class="mt-4 mb-6 text-gray-500 leading-6">As I searched for inspiration to
+                                get started, I came across the captivating creations of Shane Griffin, an artist and
+                                director located in New York City...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border">
+                    <div class="relative">
+                        <img class="rounded-t-xl" src="src/images/produk 2.png" alt="">
+                    </div>
+                    <div class="flex py-6 px-6">
+                        <div>
+                            <a href="#" class="text-xl text-black font-semibold line-clamp-2">Random Explorations with
+                                Cinema 4D and Redshift</a>
+                            <p class="mt-4 mb-6 text-gray-500 leading-6">As I searched for inspiration to
+                                get started, I came across the captivating creations of Shane Griffin, an artist and
+                                director located in New York City...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border">
+                    <div class="relative">
+                        <img class="rounded-t-xl" src="src/images/produk 3.png" alt="">
+                    </div>
+                    <div class="flex py-6 px-6">
+                        <div>
+                            <a href="#" class="text-xl text-black font-semibold line-clamp-2">Step by step guide for
+                                conducting usability</a>
+                            <p class="mt-4 mb-6 text-gray-500 leading-6">As I searched for inspiration to
+                                get started, I came across the captivating creations of Shane Griffin, an artist and
+                                director located in New York City...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Produk End -->
+
+    <!-- Services Start -->
+    <section id="services" class="py-20">
+        <div class="container mx-auto">
+            <div class="max-w-2xl mx-auto text-center">
+                <p class="badge w-fit bg-slate-700 text-white p-[8px_16px] rounded-full uppercase mx-auto font-bold text-sm">
+                    LAYANAN</p>
+                <h2 class="text-3xl md:text-4xl/tight font-semibold text-black mt-4">Layanan Terbaik
+                    Kami </h2>
+            </div>
+
+            <div
+                class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-x-3 gap-y-6 md:gap-y-12 lg:gap-y-24 md:pt-20 pt-12">
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center">
+                        <div class="items-center justify-center flex bg-primary/10 rounded-[49%_80%_40%_90%_/_50%_30%_70%_80%] h-20 w-20 border">
+                            <img src="src/images/check-svgrepo-com.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu h-10 w-10 text-primary"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></img>
+                        </div>
+                    </div>
+                    <h1 class="text-xl font-semibold pt-4">Kualitas Terjamin</h1>
+                    <p class="text-base text-gray-600 mt-2">Gain a comprehensive understanding of your industry
+                        landscape.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center" bis_skin_checked="1">
+                        <div class="items-center justify-center flex bg-primary/10 rounded-[49%_80%_40%_90%_/_50%_30%_70%_80%] h-20 w-20 border" bis_skin_checked="1">
+                            <img src="src/images/shipping-truck-svgrepo-com.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="lightbulb" class="lucide lucide-lightbulb h-10 w-10 text-primary"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></img>
+                        </div>
+                    </div>
+                    <h1 class="text-xl font-semibold pt-4">Pengiriman Cepat & Aman </h1>
+                    <p class="text-base text-gray-600 mt-2">Evaluate the viability and potential of new products or
+                        services.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center" bis_skin_checked="1">
+                        <div class="items-center justify-center flex bg-primary/10 rounded-[49%_80%_40%_90%_/_50%_30%_70%_80%] h-20 w-20 border" bis_skin_checked="1">
+                            <img src="src/images/wrench-svgrepo-com.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bar-chart-big" class="lucide lucide-bar-chart-big h-10 w-10 text-primary"><path d="M3 3v18h18"></path><rect width="4" height="7" x="7" y="10" rx="1"></rect><rect width="4" height="12" x="15" y="5" rx="1"></rect></svg>
+                        </div>
+                    </div>
+                    <h1 class="text-xl font-semibold pt-4">Custom Furniture</h1>
+                    <p class="text-base text-gray-600 mt-2">Benchmark your performance against competitors, identify
+                        strengths.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="flex items-center justify-center" bis_skin_checked="1">
+                        <div class="items-center justify-center flex bg-primary/10 rounded-[49%_80%_40%_90%_/_50%_30%_70%_80%] h-20 w-20 border" bis_skin_checked="1">
+                            <img src="src/images/chat-bubble-user-svgrepo-com.svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="codepen" class="lucide lucide-codepen h-10 w-10 text-primary"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon><line x1="12" x2="12" y1="22" y2="15.5"></line><polyline points="22 8.5 12 15.5 2 8.5"></polyline><polyline points="2 15.5 12 8.5 22 15.5"></polyline><line x1="12" x2="12" y1="2" y2="8.5"></line></svg>
+                        </div>
+                    </div>
+                    <h1 class="text-xl font-semibold pt-4">Layanan Pelanggan</h1>
+                    <p class="text-base text-gray-600 mt-2">Anticipate market shifts and emerging trends to stay ahead
+                        of the curve.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Services End -->
+<!-- Faqs Start -->
+<section class="container-main flex flex-col gap-10 my-20">
+    <div class="flex flex-col lg:flex-row gap-[50px] sm:gap-[70px] items-center">
+        <div class="text-sm py-20 px-10">
+            <div class="flex flex-col gap-[10px]" >
+                <h2 class="font-bold text-4xl leading-[45px]">Pertanyaan yang Sering Diajukan</h2>
+            </div>
+            <button onclick="window.location.href='#Kontak'" class="inline-block mt-6 px-6 py-3 bg-slate-700 text-white font-medium rounded-lg transition-all duration-300 hover:scale-105 active:scale-95">
+                Hubungi Kami
+            </button>
+        </div>
+        <div class="flex flex-col gap-[30px] sm:w-[603px] shrink-0">
+                                <div class="flex flex-col p-5 rounded-2xl bg-gray-200 w-full">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold text-lg leading-[27px] text-justify">Apakah Nadzar Furniture menyediakan layanan custom furniture?</span>
+                        <p class="leading-[30px] text-gray-500 pt-[14px] text-justify">Ya, kami menerima pesanan custom furniture sesuai dengan kebutuhan dan desain yang Anda inginkan. Tim kami siap membantu Anda dalam memilih bahan, ukuran, dan desain yang sesuai dengan ruangan Anda.
+                        </p>
+                    </div>
+                </div>
+                                <div class="flex flex-col p-5 rounded-2xl bg-gray-200 w-full">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold text-lg leading-[27px] text-justify">Berapa lama waktu yang dibutuhkan untuk produksi furniture?</span>
+                        <p class="leading-[30px] text-gray-500 pt-[14px] text-justify">Waktu produksi tergantung pada jenis dan kompleksitas produk. Secara umum, produksi memakan waktu sekitar 2-6 minggu. Tim kami akan memberikan estimasi yang lebih akurat setelah pesanan dikonfirmasi.
+                    </div>
+                </div>
+                                <div class="flex flex-col p-5 rounded-2xl bg-gray-200 w-full">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold text-lg leading-[27px] text-justify">Apa saja jenis material yang digunakan untuk furniture?</span>
+                        <p class="leading-[30px] text-gray-500 pt-[14px] text-justify">Kami menggunakan berbagai jenis material berkualitas, seperti kayu solid (jati, mahoni, dan trembesi), MDF, plywood, serta kombinasi dengan material lain seperti besi dan kaca. Setiap material dipilih dengan cermat untuk memastikan ketahanan dan estetika produk.
+                        </p>
+                    </div>
+                </div>
+                                <div class="flex flex-col p-5 rounded-2xl bg-gray-200 w-full">
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold text-lg leading-[27px] text-justify">Apakah Nadzar Furniture melayani pengiriman ke seluruh Indonesia?</span>
+                        <p class="leading-[30px] text-gray-500 pt-[14px] text-justify">Ya, kami melayani pengiriman ke berbagai wilayah di Indonesia. Biaya dan estimasi waktu pengiriman akan disesuaikan dengan lokasi tujuan. Silakan hubungi tim kami untuk informasi lebih lanjut mengenai pengiriman ke daerah Anda.
+                    </div>
+                </div>
+                        </div>
+    </div>
+</section>
+<!-- Faqs End -->
+<!-- Contact Start -->
+<section id="contact" class="py-20 bg-gray-50">
+    <div class="container mx-auto">
+        <div class="grid lg:grid-cols-3 gap-6 items-center">
+            <div>
+                <div>
+                    <p class="badge w-fit bg-slate-700 text-white p-[8px_16px] rounded-full uppercase font-bold text-sm">
+                        KONTAK</p>
+                </div>
+                <h2 class="text-3xl md:text-4xl/tight font-semibold mt-4">Hubungi Kami</h2>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-start mt-10">
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="map-pin" class="text-2xl text-primary"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="map-pin" class="lucide lucide-map-pin text-2xl text-primary"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    </div>
+                    <div>
+                        <h5 class="text-base text-muted font-medium mb-1">Lorem ipsum dolor sit amet</h5>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-start mt-10">
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="mail" class="text-2xl text-primary"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center" bis_skin_checked="1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail text-2xl text-primary"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                    </div>
+                    <div>
+                        <h5 class="text-base text-muted font-medium mb-1">Nadzar@recodex.com</h5>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-start mt-10">
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="smartphone" class="text-2xl text-primary"></i>
+                    </div>
+                    <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center" bis_skin_checked="1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="smartphone" class="lucide lucide-smartphone text-2xl text-primary"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>
+                    </div>
+                    <div>
+                        <h5 class="text-base text-muted font-medium mb-1">081-000-000-000</h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 lg:ms-24">
+                <div class="p-6 md:p-12 rounded-md shadow-lg bg-white">
+                    <form>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="formFirstName"
+                                    class="block text-sm/normal font-semibold text-black mb-2">Nama</label>
+                                <input type="text"
+                                    class="block w-full text-sm rounded-md py-3 px-4 border-gray-200 focus:border-gray-300 focus:ring-transparent"
+                                    id="formFirstName" placeholder="Nama Anda..." required="">
+                            </div>
+
+                            <div>
+                                <label for="formEmail"
+                                    class="block text-sm/normal font-semibold text-black mb-2">Email</label>
+                                <input type="email"
+                                    class="block w-full text-sm rounded-md py-3 px-4 border-gray-200 focus:border-gray-300 focus:ring-transparent"
+                                    id="formEmail" placeholder="Email Anda..." required="">
+                            </div>
+
+                            <div>
+                                <label for="formPhone"
+                                    class="block text-sm/normal font-semibold text-black mb-2">Nomor Telepon</label>
+                                <input type="text"
+                                    class="block w-full text-sm rounded-md py-3 px-4 border-gray-200 focus:border-gray-300 focus:ring-transparent"
+                                    id="formPhone" placeholder="Nomor Telepon Anda..." required="">
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <div class="mb-4">
+                                    <label for="formMessages"
+                                        class="block text-sm/normal font-semibold text-black mb-2">Pesan</label>
+                                    <textarea
+                                        class="block w-full text-sm rounded-md py-3 px-4 border-gray-200 focus:border-gray-300 focus:ring-transparent"
+                                        id="formMessages" rows="4" placeholder="Pesan Anda..."
+                                        required=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit"
+                                class="py-2 px-6 rounded-xl text-baseitems-center justify-center border border-primary text-black bg-primary hover:bg-primaryDark hover:shadow-[0_12px_30px_0_#2e74e2] transition-all duration-500 font-medium">
+                                Kirim Pesan<i class="mdi mdi-send ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact End -->
+<!-- Footer Start -->
+<footer class="bg-[#17243A]">
+    <div class="container mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 pb-16 pt-16">
+            <div class="col-span-full lg:col-span-2">
+                <div class="max-w-2xl mx-auto">
+                    <div class="flex items-center">
+                        <img src="src/images/logo.png" alt="" class="h-16 me-5">
+                        <p id="CompanyName" class="font-extrabold text-lg lg:text-xl text-gray-300">
+                            Nadzar Furniture & Showroom</p>
+                    </div>
+                    <p class="text-gray-300 max-w-xs mt-6">This may include the company's address, phone number, email address, and links to social media profiles.</p>
+                </div>
+
+                <div class="mt-6 grid space-y-3">
+                    <a class="inline-flex items-center gap-x-4 text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        Nadzar@Recodex.com
+                    </a>
+
+                    <a class="inline-flex items-center gap-x-4 text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        (888) 253 145 148
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-span-1">
+                <h4 class="font-semibold text-gray-100 uppercase">LAYANAN</h4>
+    
+                <div class="mt-6 grid space-y-3">
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Kualitas Terjamin</a></p>
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Pengiriman Cepat & Aman</a></p>
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Custom Furniture</a></p>
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Layanan Pelanggan</a></p>
+                </div>
+            </div>
+    
+            <div class="col-span-1">
+                <h4 class="font-semibold text-gray-100 uppercase">TENTANG KAMI</h4>
+        
+                <div class="mt-6 grid space-y-3">
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Layanan</a></p>
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Tentang Kami</a></p>
+                    <p><a class="inline-flex gap-x-2 text-base text-gray-300 hover:text-gray-400 transition-all duration-300" href="#">Faq</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-4 bg-[#1C2940]">
+        <!-- 1B283F -->
+        <div class="container mx-auto">
+            <div class="flex justify-between items-center">
+                <p class="text-base text-white"><script>document.write(new Date().getFullYear())</script>© Nadzar Furniture & Showroom</p>
+
+                <div>
+                    <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent text-white hover:bg-primary transition-all duration-300" href="#">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                        </svg>
+                    </a>
+                    <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent text-white hover:bg-primary transition-all duration-300" href="#">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                        </svg>
+                    </a>
+                    <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent text-white hover:bg-primary transition-all duration-300" href="#">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                        </svg>
+                    </a>
+                    <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent text-white hover:bg-primary transition-all duration-300" href="#">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                    </a>
+                    <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-md border border-transparent text-white hover:bg-primary transition-all duration-300" href="#">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3.362 10.11c0 .926-.756 1.681-1.681 1.681S0 11.036 0 10.111C0 9.186.756 8.43 1.68 8.43h1.682v1.68zm.846 0c0-.924.756-1.68 1.681-1.68s1.681.756 1.681 1.68v4.21c0 .924-.756 1.68-1.68 1.68a1.685 1.685 0 0 1-1.682-1.68v-4.21zM5.89 3.362c-.926 0-1.682-.756-1.682-1.681S4.964 0 5.89 0s1.68.756 1.68 1.68v1.682H5.89zm0 .846c.924 0 1.68.756 1.68 1.681S6.814 7.57 5.89 7.57H1.68C.757 7.57 0 6.814 0 5.89c0-.926.756-1.682 1.68-1.682h4.21zm6.749 1.682c0-.926.755-1.682 1.68-1.682.925 0 1.681.756 1.681 1.681s-.756 1.681-1.68 1.681h-1.681V5.89zm-.848 0c0 .924-.755 1.68-1.68 1.68A1.685 1.685 0 0 1 8.43 5.89V1.68C8.43.757 9.186 0 10.11 0c.926 0 1.681.756 1.681 1.68v4.21zm-1.681 6.748c.926 0 1.682.756 1.682 1.681S11.036 16 10.11 16s-1.681-.756-1.681-1.68v-1.682h1.68zm0-.847c-.924 0-1.68-.755-1.68-1.68 0-.925.756-1.681 1.68-1.681h4.21c.924 0 1.68.756 1.68 1.68 0 .926-.756 1.681-1.68 1.681h-4.21z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+    
+</footer>
+<!-- Footer End -->
+    <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>
